@@ -1,6 +1,19 @@
 import http from "http"; // Importa o módulo HTTP nativo
 
-let list = [{}];
+let list = [
+    {
+        aluno: "Jeremias Verissimo Gomes",
+        assunto: "Programação Web"
+    },
+    {
+        aluno: "Luiz Roberto",
+        assunto: "Programação Orientada a Objeto"
+    },
+    {
+        aluno: "Pablo Franciolly",
+        assunto: "Banco de Dados"
+    },
+]
 
 const server = http.createServer((req, res) => { // Cria o servidor e define a função para cada requisição
 
@@ -10,19 +23,24 @@ const server = http.createServer((req, res) => { // Cria o servidor e define a f
     return; // Interrompe execução
   }
 
-  if (req.method === "GET" && req.url === "/") { // rota "/" retorna status da requisição e a list
-    res.writeHead(200, { "Content-Type": "application/json" }); // Define status 200 e tipo JSON
-    res.end(JSON.stringify({ status: "ok", result: list})); // Envia JSON e encerra
+
+  // RETORNA O TOTAL DE ELEMENTOS NA LISTA
+  if (req.method === "GET" && req.url.startsWith("/student")) {
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify(list));
+    return;
+  }
+
+  if (req.method === "POST" && req.url === "/student") { // Verifica rota POST /student
+    res.writeHead(201, { "Content-Type": "text/html" }); // Define status 201 e tipo HTML
+    res.end("<h1>Estudante cadastrado com sucesso</h1>"); // Retorna mensagem HTML
     return; // Interrompe execução
   }
+
   res.writeHead(404); // Define status 404 para rota inexistente
-  res.end(JSON.stringify({
-    "aluno": "aluno1",
-    "assunto": "assunto1",
-  })); // Finaliza resposta
+  res.end(); // Finaliza resposta
 });
 
 server.listen(3000, () => { // Inicia o servidor na porta 3000
-  let address = server.address();
-  console.log(`Acesse o servidor em: http://localhost:${address.port}` ); // Log informativo
+  console.log("Servidor HTTP executando na porta 3000"); // Log informativo
 });

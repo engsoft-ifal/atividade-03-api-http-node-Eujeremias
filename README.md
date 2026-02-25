@@ -46,9 +46,9 @@ Os dados deverão ser armazenados em memória (array).
 
 Edite esta seção antes de iniciar.
 
-Nome completo:
-Matrícula:
-Variação calculada:
+Nome completo: Jeremias Verissimo Gomes
+Matrícula: 2023011958
+Variação calculada: 0
 
 Cálculo da variação:
 Último dígito da matrícula % 4

@@ -2,14 +2,17 @@ import http from "http"; // Importa o módulo HTTP nativo
 
 let list = [
     {
+        id: 1,
         aluno: "Jeremias Verissimo Gomes",
         assunto: "Programação Web"
     },
     {
+        id: 2,
         aluno: "Luiz Roberto",
         assunto: "Programação Orientada a Objeto"
     },
     {
+        id: 3,
         aluno: "Pablo Franciolly",
         assunto: "Banco de Dados"
     },
@@ -23,6 +26,22 @@ const server = http.createServer((req, res) => { // Cria o servidor e define a f
     return; // Interrompe execução
   }
 
+  // RETORNA O TOTAL DE ELEMENTOS NA LISTA
+  if (req.method === "GET" && req.url.startsWith("/student/")) {
+  const id = Number(req.url.split("/")[2]);
+  const student = list.find((s) => s.id === id);
+
+  if (!student) {
+    res.writeHead(404, { "Content-Type": "application/json" });
+    res.end(JSON.stringify({ message: "Aluno não encontrado" }));
+    return;
+  }
+
+  res.writeHead(200, { "Content-Type": "application/json" });
+  res.end(JSON.stringify(student));
+  return;
+}
+
 
   // RETORNA O TOTAL DE ELEMENTOS NA LISTA
   if (req.method === "GET" && req.url.startsWith("/student")) {
@@ -30,6 +49,9 @@ const server = http.createServer((req, res) => { // Cria o servidor e define a f
     res.end(JSON.stringify(list));
     return;
   }
+
+
+
 
   if (req.method === "POST" && req.url === "/student") { // Verifica rota POST /student
     res.writeHead(201, { "Content-Type": "text/html" }); // Define status 201 e tipo HTML

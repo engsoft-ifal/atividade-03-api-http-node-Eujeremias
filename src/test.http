@@ -1,0 +1,27 @@
+// Solicitando lista total
+GET http://localhost:3000/student
+
+####
+
+GET http://localhost:3000/health
+// Buscando primeiro usuario
+####
+GET http://localhost:3000/student/0
+// Buscando segundo usuario
+
+####
+//Mostra conteúdo dentro de assunto
+
+####
+GET http://localhost:3000/student/55
+
+####
+
+POST http://localhost:3000/student
+Content-Type: application/json
+
+{
+  "aluno": "Jeremias comedor de picanha",
+  "assunto": "PWEB3"
+}
+####

@@ -20,9 +20,18 @@ let list = [
 
 const server = http.createServer((req, res) => { // Cria o servidor e define a função para cada requisição
 
+
+  // GETRs
+
   if (req.method === "GET" && req.url === "/health") { // Verifica rota GET /health
     res.writeHead(200, { "Content-Type": "application/json" }); // Define status 200 e tipo JSON
     res.end(JSON.stringify({ status: "ok" })); // Envia JSON e encerra
+    return; // Interrompe execução
+  }
+
+  if (req.method === "GET" && req.url === "/health") { // Verifica rota GET /health
+    res.writeHead(200, { "Content-Type": "application/json" }); // Define status 200 e tipo JSON
+    res.end(JSON.stringify({ message: "você está na página assunto", status: "ok" })); // Envia JSON e encerra
     return; // Interrompe execução
   }
 
@@ -36,6 +45,16 @@ const server = http.createServer((req, res) => { // Cria o servidor e define a f
     res.end(JSON.stringify({ message: "Aluno não encontrado" }));
     return;
   }
+ // ========================================================================================================
+
+ // POSTs
+
+
+ 
+
+
+ // ========================================================================================================
+
 
   res.writeHead(200, { "Content-Type": "application/json" });
   res.end(JSON.stringify(student));

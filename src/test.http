@@ -1,0 +1,12 @@
+// Solicitando lista total
+GET http://localhost:3000/student
+
+// Buscando primeiro usuario
+####
+GET http://localhost:3000/student/1
+// Buscando segundo usuario
+####
+GET http://localhost:3000/student/2
+// Buscando terceiro usuario
+####
+GET http://localhost:3000/student/3

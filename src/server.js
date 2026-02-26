@@ -63,28 +63,6 @@ const server = http.createServer((req, res) => { // Cria o servidor e define a f
     res.end(JSON.stringify(list));
     return;
   }
-
-  if(req.method === "POST" && req.url === "/student"){
-    let body = "";
-
-    req.on("data",(c)=>{
-      body+=c.toString();
-    })
-
-    req.on("end",()=>{
-      const data = JSON.parse(body);
-
-      const newStudent = {
-        id: list.length+1,
-        aluno: data.aluno,
-        assunto: data.assunto
-      };
-
-      list.push(newStudent);
-
-      res.writeHead(201,{"Content-Type":"application/json"})
-      res.end(JSON.stringify({message: "Cadastro com sucesso", newStudent}))
-    })
   }
 
 

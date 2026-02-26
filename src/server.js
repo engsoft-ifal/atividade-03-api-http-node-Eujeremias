@@ -1,18 +1,20 @@
 import http from "http"; // Importa o módulo HTTP nativo
 
+let idIncrement = 0
+
 let list = [
     {
-        id: 1,
+        id: idIncrement++,
         aluno: "Jeremias Verissimo Gomes",
         assunto: "Programação Web"
     },
     {
-        id: 2,
+        id: idIncrement++,
         aluno: "Luiz Roberto",
         assunto: "Programação Orientada a Objeto"
     },
     {
-        id: 3,
+        id: idIncrement++,
         aluno: "Pablo Franciolly",
         assunto: "Banco de Dados"
     },
@@ -37,30 +39,23 @@ const server = http.createServer((req, res) => { // Cria o servidor e define a f
 
   // RETORNA O TOTAL DE ELEMENTOS NA LISTA
   if (req.method === "GET" && req.url.startsWith("/student/")) {
-  const id = Number(req.url.split("/")[2]);
-  const student = list.find((s) => s.id === id);
+  const id = Number(req.url.split("/")[2]); //pega o iDd
+  const student = list.find((element) => element.id === id);
 
   if (!student) {
     res.writeHead(404, { "Content-Type": "application/json" });
     res.end(JSON.stringify({ message: "Aluno não encontrado" }));
     return;
   }
- // ========================================================================================================
-
- // POSTs
-
-
- 
-
-
- // ========================================================================================================
-
 
   res.writeHead(200, { "Content-Type": "application/json" });
   res.end(JSON.stringify(student));
   return;
 }
 
+ if(req.method === "POST" && req.url === "/student"){
+  let body = "";
+ }
 
   // RETORNA O TOTAL DE ELEMENTOS NA LISTA
   if (req.method === "GET" && req.url.startsWith("/student")) {
@@ -69,17 +64,38 @@ const server = http.createServer((req, res) => { // Cria o servidor e define a f
     return;
   }
 
+  if(req.method === "POST" && req.url === "/student"){
+    let body = "";
 
+    req.on("data",(c)=>{
+      body+=c.toString();
+    })
 
+    req.on("end",()=>{
+      const data = JSON.parse(body);
 
-  if (req.method === "POST" && req.url === "/student") { // Verifica rota POST /student
-    res.writeHead(201, { "Content-Type": "text/html" }); // Define status 201 e tipo HTML
-    res.end("<h1>Estudante cadastrado com sucesso</h1>"); // Retorna mensagem HTML
-    return; // Interrompe execução
+      const newStudent = {
+        id: list.length+1,
+        aluno: data.aluno,
+        assunto: data.assunto
+      };
+
+      list.push(newStudent);
+
+      res.writeHead(201,{"Content-Type":"application/json"})
+      res.end(JSON.stringify({message: "Cadastro com sucesso", newStudent}))
+    })
   }
 
-  res.writeHead(404); // Define status 404 para rota inexistente
-  res.end(); // Finaliza resposta
+
+  // if (req.method === "POST" && req.url === "/student") { // Verifica rota POST /student
+  //   res.writeHead(201, { "Content-Type": "text/html" }); // Define status 201 e tipo HTML
+  //   res.end("<h1>Estudante cadastrado com sucesso</h1>"); // Retorna mensagem HTML
+  //   return; // Interrompe execução
+  // }
+
+  // res.writeHead(404); // Define status 404 para rota inexistente
+  // res.end(); // Finaliza resposta
 });
 
 server.listen(3000, () => { // Inicia o servidor na porta 3000

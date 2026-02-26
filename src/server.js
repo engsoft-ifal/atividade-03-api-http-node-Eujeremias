@@ -1,40 +1,24 @@
 import http from "http"; // Importa o módulo HTTP nativo
+import { json } from "stream/consumers"
 
 let idIncrement = 0
+let list = []
 
-let list = [
-  {
-    id: idIncrement++,
-    aluno: "Jeremias Verissimo Gomes",
-    assunto: "Programação Web"
-  },
-  {
-    id: idIncrement++,
-    aluno: "Luiz Roberto",
-    assunto: "Programação Orientada a Objeto"
-  },
-  {
-    id: idIncrement++,
-    aluno: "Pablo Franciolly",
-    assunto: "Banco de Dados"
-  },
-]
+const sendJSON = (res, statusCode, data) => {
+    res.writeHead(statusCode, { "Content-Type": "application/json" });
+    res.end(JSON.stringify(data));
+};
 
-const server = http.createServer((req, res) => { // Cria o servidor e define a função para cada requisição
+const server = http.createServer(async (req, res) => { // Cria o servidor e define a função para cada requisição
 
 
   // GETRs
 
   if (req.method === "GET" && req.url === "/health") { // Verifica rota GET /health
-    res.writeHead(200, { "Content-Type": "application/json" }); // Define status 200 e tipo JSON
-    res.end(JSON.stringify({ status: "ok" })); // Envia JSON e encerra
-    return; // Interrompe execução
-  }
-
-  if (req.method === "GET" && req.url === "/health") { // Verifica rota GET /health
-    res.writeHead(200, { "Content-Type": "application/json" }); // Define status 200 e tipo JSON
-    res.end(JSON.stringify({ message: "você está na página assunto", status: "ok" })); // Envia JSON e encerra
-    return; // Interrompe execução
+    return sendJSON(res,200,{ status: "ok" });
+    // res.writeHead(200, { "Content-Type": "application/json" }); // Define status 200 e tipo JSON
+    // res.end(JSON.stringify({ status: "ok" })); // Envia JSON e encerra
+    // return; // Interrompe execução
   }
 
   // RETORNA O TOTAL DE ELEMENTOS NA LISTA
@@ -53,16 +37,40 @@ const server = http.createServer((req, res) => { // Cria o servidor e define a f
     return;
   }
 
-  if (req.method === "POST" && req.url === "/student") {
-    let body = "";
-  }
-
   // RETORNA O TOTAL DE ELEMENTOS NA LISTA
   if (req.method === "GET" && req.url.startsWith("/student")) {
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify(list));
     return;
   }
+
+
+  if (req.method === "POST" && req.url === "/student") {
+    try {
+        const data = await json(req);
+
+        const { aluno, assunto } = data;
+
+        if (!aluno || !assunto) {
+            return sendJSON(res, 422, {
+                erro: "Campos obrigatórios: aluno, assunto"
+            });
+        }
+
+        const novoAluno = {
+            id: idIncrement++,
+            aluno,
+            assunto,
+        };
+
+        list.push(novoAluno);
+
+        return sendJSON(res, 201, novoAluno);
+
+    } catch (error) {
+        return sendJSON(res, 400, { erro: "JSON inválido" });
+    }
+}
 }
 
 

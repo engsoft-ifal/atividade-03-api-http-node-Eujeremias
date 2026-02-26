@@ -10,7 +10,10 @@ GET http://localhost:3000/student/2
 // Buscando terceiro usuario
 ####
 GET http://localhost:3000/student/3
-
 // Retorna usuário não encontrado
+
+####
+//Mostra conteúdo dentro de assunto
+GET http:localhost:3000/assunto
 ####
 GET http://localhost:3000/student/55

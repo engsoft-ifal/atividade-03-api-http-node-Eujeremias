@@ -22,30 +22,30 @@ const server = http.createServer(async (req, res) => { // Cria o servidor e defi
   }
 
   // RETORNA O TOTAL DE ELEMENTOS NA LISTA
-  if (req.method === "GET" && req.url.startsWith("/student/")) {
+  if (req.method === "GET" && req.url.startsWith("/atendimentos/")) {
     const id = Number(req.url.split("/")[2]); //pega o iDd
-    const student = list.find((element) => element.id === id);
+    const atendimentos = list.find((element) => element.id === id);
 
-    if (!student) {
+    if (!atendimentos) {
       res.writeHead(404, { "Content-Type": "application/json" });
       res.end(JSON.stringify({ message: "Aluno não encontrado" }));
       return;
     }
 
     res.writeHead(200, { "Content-Type": "application/json" });
-    res.end(JSON.stringify(student));
+    res.end(JSON.stringify(atendimentos));
     return;
   }
 
   // RETORNA O TOTAL DE ELEMENTOS NA LISTA
-  if (req.method === "GET" && req.url.startsWith("/student")) {
+  if (req.method === "GET" && req.url.startsWith("/atendimentos")) {
     res.writeHead(200, { "Content-Type": "application/json" });
     res.end(JSON.stringify(list));
     return;
   }
 
 
-  if (req.method === "POST" && req.url === "/student") {
+  if (req.method === "POST" && req.url === "/atendimentos") {
     try {
         const data = await json(req);
 
@@ -74,7 +74,7 @@ const server = http.createServer(async (req, res) => { // Cria o servidor e defi
 }
 
 
-  // if (req.method === "POST" && req.url === "/student") { // Verifica rota POST /student
+  // if (req.method === "POST" && req.url === "/atendimentos") { // Verifica rota POST /atendimentos
   //   res.writeHead(201, { "Content-Type": "text/html" }); // Define status 201 e tipo HTML
   //   res.end("<h1>Estudante cadastrado com sucesso</h1>"); // Retorna mensagem HTML
   //   return; // Interrompe execução

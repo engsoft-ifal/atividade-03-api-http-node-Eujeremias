@@ -3,21 +3,21 @@ import http from "http"; // Importa o módulo HTTP nativo
 let idIncrement = 0
 
 let list = [
-    {
-        id: idIncrement++,
-        aluno: "Jeremias Verissimo Gomes",
-        assunto: "Programação Web"
-    },
-    {
-        id: idIncrement++,
-        aluno: "Luiz Roberto",
-        assunto: "Programação Orientada a Objeto"
-    },
-    {
-        id: idIncrement++,
-        aluno: "Pablo Franciolly",
-        assunto: "Banco de Dados"
-    },
+  {
+    id: idIncrement++,
+    aluno: "Jeremias Verissimo Gomes",
+    assunto: "Programação Web"
+  },
+  {
+    id: idIncrement++,
+    aluno: "Luiz Roberto",
+    assunto: "Programação Orientada a Objeto"
+  },
+  {
+    id: idIncrement++,
+    aluno: "Pablo Franciolly",
+    assunto: "Banco de Dados"
+  },
 ]
 
 const server = http.createServer((req, res) => { // Cria o servidor e define a função para cada requisição
@@ -39,23 +39,23 @@ const server = http.createServer((req, res) => { // Cria o servidor e define a f
 
   // RETORNA O TOTAL DE ELEMENTOS NA LISTA
   if (req.method === "GET" && req.url.startsWith("/student/")) {
-  const id = Number(req.url.split("/")[2]); //pega o iDd
-  const student = list.find((element) => element.id === id);
+    const id = Number(req.url.split("/")[2]); //pega o iDd
+    const student = list.find((element) => element.id === id);
 
-  if (!student) {
-    res.writeHead(404, { "Content-Type": "application/json" });
-    res.end(JSON.stringify({ message: "Aluno não encontrado" }));
+    if (!student) {
+      res.writeHead(404, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ message: "Aluno não encontrado" }));
+      return;
+    }
+
+    res.writeHead(200, { "Content-Type": "application/json" });
+    res.end(JSON.stringify(student));
     return;
   }
 
-  res.writeHead(200, { "Content-Type": "application/json" });
-  res.end(JSON.stringify(student));
-  return;
-}
-
- if(req.method === "POST" && req.url === "/student"){
-  let body = "";
- }
+  if (req.method === "POST" && req.url === "/student") {
+    let body = "";
+  }
 
   // RETORNA O TOTAL DE ELEMENTOS NA LISTA
   if (req.method === "GET" && req.url.startsWith("/student")) {
@@ -63,7 +63,7 @@ const server = http.createServer((req, res) => { // Cria o servidor e define a f
     res.end(JSON.stringify(list));
     return;
   }
-  }
+}
 
 
   // if (req.method === "POST" && req.url === "/student") { // Verifica rota POST /student
@@ -74,7 +74,8 @@ const server = http.createServer((req, res) => { // Cria o servidor e define a f
 
   // res.writeHead(404); // Define status 404 para rota inexistente
   // res.end(); // Finaliza resposta
-});
+  //
+);
 
 server.listen(3000, () => { // Inicia o servidor na porta 3000
   console.log("Servidor HTTP executando na porta 3000"); // Log informativo
